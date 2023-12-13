@@ -23,7 +23,7 @@ export const Note = ({
   const timestamp = DateTime.fromISO(note.updatedAt).toFormat("dd.MM.yyyy");
   return (
     <div
-      className={`card bg-base-200 shadow-lg max-w-sm ${
+      className={`card bg-base-200 shadow-lg max-w-sm w-full ${
         isArchived && "opacity-60"
       }`}
     >
