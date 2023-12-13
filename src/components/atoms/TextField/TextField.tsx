@@ -1,14 +1,13 @@
-import { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, InputHTMLAttributes, forwardRef } from "react";
 
-export type TextFieldProps = {
+export type TextFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
-  placeholder: string;
-  defaultValue?: string;
+  error?: string;
 };
 
 export const TextField = forwardRef(
   (
-    { label, placeholder, defaultValue, ...rest }: TextFieldProps,
+    { label, error, ...rest }: TextFieldProps,
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     return (
@@ -18,12 +17,17 @@ export const TextField = forwardRef(
         </div>
         <input
           {...rest}
-          defaultValue={defaultValue}
           type="text"
           ref={ref}
-          placeholder={placeholder}
-          className="input input-bordered w-full max-w-xs"
+          className={`input input-bordered w-full max-w-xs ${
+            error && "border-error"
+          }`}
         />
+        {error && (
+          <div className="label">
+            <span className="label-text-alt text-error">{error}</span>
+          </div>
+        )}
       </label>
     );
   },

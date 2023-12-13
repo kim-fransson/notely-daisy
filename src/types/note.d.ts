@@ -18,6 +18,12 @@ type Note = {
   state: NoteState;
 };
 
+type NoteFormValues = {
+  title: string;
+  category: Category;
+  description?: string;
+};
+
 type NoteKeys = keyof Note;
 
 type NoteAction =

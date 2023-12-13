@@ -1,10 +1,11 @@
 import "./App.css";
-import { Navbar, NoteList } from "@components/molecules";
+import { Navbar } from "@components/molecules";
 import { NotesContext } from "@/contexts";
 import { useDebounce, useLocalStorage } from "@uidotdev/usehooks";
 import { notesReducer } from "@/reducers";
 import { useEffect, useReducer, useState } from "react";
 import { categories } from "./data/categories";
+import { NoteList } from "./components/organism";
 
 export default function App() {
   const [localStorageNotes, saveNotes] = useLocalStorage<Note[]>("notes", []);

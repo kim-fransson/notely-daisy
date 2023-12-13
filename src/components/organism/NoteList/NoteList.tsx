@@ -33,7 +33,13 @@ export const NoteList = ({
   const { notes, dispatch } = useContext(NotesContext);
   const [activeList, setActiveList] = useState(notes);
   const [selectedNote, setSelectedNote] = useState<Note>();
-  const { register, handleSubmit } = useForm<NoteFormValues>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm<NoteFormValues>();
 
   useEffect(() => {
     if (searchTerm) {
@@ -119,12 +125,14 @@ export const NoteList = ({
         id={EDIT_NOTE_MODAL_ID}
         title="Edit note"
         confirmLabel="Edit"
+        onClose={() => reset()}
         onConfirm={() => handleSubmit(onSubmit)()}
       >
         <form className="grid grid-cols-2 gap-4">
           <TextField
             placeholder="Add title"
             label="title"
+            error={errors.title?.message}
             defaultValue={selectedNote?.title}
             {...register("title", { required: "Please provide a title" })}
           />
@@ -142,6 +150,7 @@ export const NoteList = ({
             defaultValue={selectedNote?.description}
             placeholder="Add description"
             className="col-span-full"
+            value={watch("description")}
             {...register("description", { maxLength: 200 })}
           />
         </form>

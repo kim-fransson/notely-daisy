@@ -5,6 +5,7 @@ export type ModalProps = {
   id?: string;
   title: string;
   onConfirm: () => void;
+  onClose?: () => void;
   confirmLabel?: string;
   confirmType?: "primary" | "danger";
 } & PropsWithChildren;
@@ -14,6 +15,7 @@ export const Modal = ({
   children,
   title,
   onConfirm,
+  onClose,
   confirmLabel = "confirm",
   confirmType = "primary",
 }: ModalProps) => {
@@ -21,7 +23,10 @@ export const Modal = ({
     <dialog id={id} className="modal">
       <div className="modal-box">
         <form method="dialog">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <button
+            onClick={onClose}
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          >
             <CloseIcon />
           </button>
         </form>
@@ -29,7 +34,9 @@ export const Modal = ({
         {children}
         <div className="flex justify-end items-center gap-4 mt-8">
           <form method="dialog">
-            <button className="btn btn-ghost capitalize">cancel</button>
+            <button onClick={onClose} className="btn btn-ghost capitalize">
+              cancel
+            </button>
           </form>
           <button
             type="submit"

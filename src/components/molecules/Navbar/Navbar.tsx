@@ -25,7 +25,13 @@ export type NavbarProps = {
 export const Navbar = ({ onChange }: NavbarProps) => {
   const { dispatch } = useContext(NotesContext);
 
-  const { register, handleSubmit } = useForm<NoteFormValues>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<NoteFormValues>();
 
   const onSubmit = (values: NoteFormValues) => {
     dispatch({
@@ -38,6 +44,7 @@ export const Navbar = ({ onChange }: NavbarProps) => {
         state: "inbox",
       },
     });
+    reset();
     closeModal(ADD_NOTE_MODAL_ID);
   };
 
@@ -66,11 +73,13 @@ export const Navbar = ({ onChange }: NavbarProps) => {
         title="Add"
         confirmLabel="Add"
         onConfirm={() => handleSubmit(onSubmit)()}
+        onClose={() => reset()}
       >
         <form className="grid grid-cols-2 gap-4">
           <TextField
             placeholder="Add title"
             label="title"
+            error={errors.title?.message}
             {...register("title", { required: "Please provide a title" })}
           />
 
@@ -86,6 +95,8 @@ export const Navbar = ({ onChange }: NavbarProps) => {
             label="description"
             placeholder="Add description"
             className="col-span-full"
+            maxLength={200}
+            value={watch("description")}
             {...register("description", { maxLength: 200 })}
           />
         </form>
