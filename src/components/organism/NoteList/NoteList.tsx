@@ -23,12 +23,14 @@ export type NoteListProps = {
   searchTerm: string;
   categoryFilter?: Category;
   stateFilter?: NoteState;
+  setSelectedCategory: (category: Category) => void;
 };
 
 export const NoteList = ({
   searchTerm,
   categoryFilter,
   stateFilter,
+  setSelectedCategory,
 }: NoteListProps) => {
   const { notes, dispatch } = useContext(NotesContext);
   const [activeList, setActiveList] = useState(notes);
@@ -63,11 +65,13 @@ export const NoteList = ({
   }, [searchTerm, notes, categoryFilter, stateFilter]);
 
   const onEditNote = (note: Note) => {
+    reset();
     setSelectedNote(note);
     openModal(EDIT_NOTE_MODAL_ID);
   };
 
   const onDeleteNote = (note: Note) => {
+    reset();
     setSelectedNote(note);
     openModal(DELETE_NOTE_MODAL_ID);
   };
@@ -80,6 +84,9 @@ export const NoteList = ({
   };
 
   const onSubmit = (values: NoteFormValues) => {
+    console.log({
+      values,
+    });
     dispatch({
       type: "UPDATE_NOTE",
       note: {
@@ -88,6 +95,8 @@ export const NoteList = ({
         updatedAt: new Date().toISOString(),
       },
     });
+    reset();
+    setSelectedCategory(values.category);
     closeModal(EDIT_NOTE_MODAL_ID);
   };
 

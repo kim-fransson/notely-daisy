@@ -20,9 +20,10 @@ const ADD_NOTE_MODAL_ID = "add_note_modal";
 
 export type NavbarProps = {
   onChange: (value: string) => void;
+  setSelectedCategory?: (category: Category) => void;
 };
 
-export const Navbar = ({ onChange }: NavbarProps) => {
+export const Navbar = ({ onChange, setSelectedCategory }: NavbarProps) => {
   const { dispatch } = useContext(NotesContext);
 
   const {
@@ -44,6 +45,7 @@ export const Navbar = ({ onChange }: NavbarProps) => {
         state: "inbox",
       },
     });
+    setSelectedCategory(values.category);
     reset();
     closeModal(ADD_NOTE_MODAL_ID);
   };

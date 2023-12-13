@@ -19,6 +19,7 @@ export const TextField = forwardRef(
           {...rest}
           type="text"
           ref={ref}
+          autoComplete="off"
           className={`input input-bordered w-full max-w-xs ${
             error && "border-error"
           }`}

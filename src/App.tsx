@@ -28,7 +28,10 @@ export default function App() {
   return (
     <NotesContext.Provider value={{ notes, dispatch }}>
       <div className="min-h-screen">
-        <Navbar onChange={handleSearch} />
+        <Navbar
+          onChange={handleSearch}
+          setSelectedCategory={setSelectedCategory}
+        />
         <main className="p-10">
           <h1 className="mb-4 text-2xl">Your notes</h1>
 
@@ -74,6 +77,7 @@ export default function App() {
               selectedCategory !== "all" ? selectedCategory : undefined
             }
             stateFilter={showArchived ? "archived" : undefined}
+            setSelectedCategory={setSelectedCategory}
           />
         </main>
       </div>
