@@ -3,11 +3,12 @@ import { ForwardedRef, forwardRef } from "react";
 export type TextFieldProps = {
   label: string;
   placeholder: string;
+  defaultValue?: string;
 };
 
 export const TextField = forwardRef(
   (
-    { label, placeholder, ...rest }: TextFieldProps,
+    { label, placeholder, defaultValue, ...rest }: TextFieldProps,
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     return (
@@ -17,6 +18,7 @@ export const TextField = forwardRef(
         </div>
         <input
           {...rest}
+          defaultValue={defaultValue}
           type="text"
           ref={ref}
           placeholder={placeholder}

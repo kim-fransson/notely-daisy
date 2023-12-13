@@ -24,7 +24,6 @@ export const Navbar = () => {
   const { register, handleSubmit } = useForm<NoteFormValues>();
 
   const onSubmit = (values: NoteFormValues) => {
-    console.log(values);
     dispatch({
       type: "ADD_NOTE",
       note: {
@@ -58,7 +57,7 @@ export const Navbar = () => {
         </button>
       </nav>
       <Modal
-        id={"add_note_modal"}
+        id={ADD_NOTE_MODAL_ID}
         title="Add"
         confirmLabel="Add"
         onConfirm={() => handleSubmit(onSubmit)()}

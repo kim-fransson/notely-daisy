@@ -5,11 +5,12 @@ export type TextareaProps = {
   label: string;
   placeholder: string;
   className?: string;
+  defaultValue?: string;
 };
 
 export const Textarea = forwardRef(
   (
-    { label, placeholder, className, ...rest }: TextareaProps,
+    { label, placeholder, className, defaultValue, ...rest }: TextareaProps,
     ref: ForwardedRef<HTMLTextAreaElement>,
   ) => {
     return (
@@ -19,6 +20,7 @@ export const Textarea = forwardRef(
         </div>
         <textarea
           {...rest}
+          defaultValue={defaultValue}
           ref={ref}
           className="textarea textarea-bordered h-36"
           placeholder={placeholder}

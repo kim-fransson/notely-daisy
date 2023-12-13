@@ -1,8 +1,19 @@
 import { NotesContext } from "@/contexts";
-import { filterByCategory, filterByState, sortNotes } from "@/utils";
+import {
+  closeModal,
+  filterByCategory,
+  filterByState,
+  openModal,
+  sortNotes,
+} from "@/utils";
 import Fuse from "fuse.js";
 import { useContext, useEffect, useState } from "react";
-import { Note } from "@components/molecules";
+import { Modal, Note, NoteFormValues } from "@components/molecules";
+import { useForm } from "react-hook-form";
+import { Select, TextField, Textarea } from "@/components/atoms";
+import { categories } from "@/data/categories";
+
+const EDIT_NOTE_MODAL_ID = "edit_note_modal";
 
 export type NoteListProps = {
   searchTerm: string;
@@ -17,7 +28,8 @@ export const NoteList = ({
 }: NoteListProps) => {
   const { notes, dispatch } = useContext(NotesContext);
   const [activeList, setActiveList] = useState(notes);
-  /* const [selectedNote, setSelectedNote] = useState<Note>(); */
+  const [selectedNote, setSelectedNote] = useState<Note>();
+  const { register, handleSubmit } = useForm<NoteFormValues>();
 
   useEffect(() => {
     if (searchTerm) {
@@ -42,7 +54,7 @@ export const NoteList = ({
 
   const onEditNote = (note: Note) => {
     setSelectedNote(note);
-    /* openEditNoteDialog(); */
+    openModal(EDIT_NOTE_MODAL_ID);
   };
 
   const onDeleteNote = (note: Note) => {
@@ -57,17 +69,62 @@ export const NoteList = ({
     });
   };
 
+  const onSubmit = (values: NoteFormValues) => {
+    dispatch({
+      type: "UPDATE_NOTE",
+      note: {
+        ...values,
+        id: selectedNote!.id,
+        updatedAt: new Date().toISOString(),
+      },
+    });
+    closeModal(EDIT_NOTE_MODAL_ID);
+  };
+
   return (
-    <div className="flex flex-wrap gap-6">
-      {activeList.map((note) => (
-        <Note
-          key={note.id}
-          note={note}
-          onEditNote={() => onEditNote(note)}
-          onDeleteNote={() => onDeleteNote(note)}
-          onArchiveNote={() => onArchiveNote(note)}
-        />
-      ))}
-    </div>
+    <>
+      <div className="flex flex-wrap gap-6">
+        {activeList.map((note) => (
+          <Note
+            key={note.id}
+            note={note}
+            onEditNote={() => onEditNote(note)}
+            onDeleteNote={() => onDeleteNote(note)}
+            onArchiveNote={() => onArchiveNote(note)}
+          />
+        ))}
+      </div>
+      <Modal
+        id={EDIT_NOTE_MODAL_ID}
+        title="Edit Note"
+        confirmLabel="Edit"
+        onConfirm={() => handleSubmit(onSubmit)()}
+      >
+        <form className="grid grid-cols-2 gap-4">
+          <TextField
+            placeholder="Add title"
+            label="title"
+            defaultValue={selectedNote?.title}
+            {...register("title", { required: "Please provide a title" })}
+          />
+
+          <Select
+            defaultValue={selectedNote?.category}
+            values={categories}
+            keys={categories}
+            label="category"
+            {...register("category")}
+          />
+
+          <Textarea
+            label="description"
+            defaultValue={selectedNote?.description}
+            placeholder="Add description"
+            className="col-span-full"
+            {...register("description", { maxLength: 200 })}
+          />
+        </form>
+      </Modal>
+    </>
   );
 };
