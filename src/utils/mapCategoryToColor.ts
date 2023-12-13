@@ -3,12 +3,10 @@ export const mapCategoryToColor = (
 ): CategoryColorMap[Category] => {
   switch (category) {
     case "personal":
-      return "orange";
+      return "bg-orange-400 text-orange-900";
     case "home":
-      return "green";
+      return "bg-green-400 text-green-900";
     case "business":
-      return "purple";
-    default:
-      return "orange"; // Default to orange if the category type is not recognized
+      return "bg-purple-400 text-purple-900";
   }
 };

@@ -1,10 +1,9 @@
-type Category = "all" | "business" | "personal" | "home";
+type Category = "business" | "personal" | "home";
 
 type CategoryColorMap = {
-  all: "orange";
-  personal: "orange";
-  home: "green";
-  business: "purple";
+  personal: string;
+  home: string;
+  business: string;
 };
 
 type NoteState = "inbox" | "archived";
