@@ -14,6 +14,7 @@ import { Select, TextField, Textarea } from "@/components/atoms";
 import { categories } from "@/data/categories";
 
 const EDIT_NOTE_MODAL_ID = "edit_note_modal";
+const DELETE_NOTE_MODAL_ID = "delete_note_modal";
 
 export type NoteListProps = {
   searchTerm: string;
@@ -59,7 +60,7 @@ export const NoteList = ({
 
   const onDeleteNote = (note: Note) => {
     setSelectedNote(note);
-    /* openDeleteNoteDialog(); */
+    openModal(DELETE_NOTE_MODAL_ID);
   };
 
   const onArchiveNote = (note: Note) => {
@@ -81,6 +82,14 @@ export const NoteList = ({
     closeModal(EDIT_NOTE_MODAL_ID);
   };
 
+  const handleDelete = () => {
+    dispatch({
+      type: "DELETE_NOTE",
+      noteId: selectedNote!.id,
+    });
+    closeModal(DELETE_NOTE_MODAL_ID);
+  };
+
   return (
     <>
       <div className="flex flex-wrap gap-6">
@@ -96,7 +105,7 @@ export const NoteList = ({
       </div>
       <Modal
         id={EDIT_NOTE_MODAL_ID}
-        title="Edit Note"
+        title="Edit note"
         confirmLabel="Edit"
         onConfirm={() => handleSubmit(onSubmit)()}
       >
@@ -124,6 +133,15 @@ export const NoteList = ({
             {...register("description", { maxLength: 200 })}
           />
         </form>
+      </Modal>
+      <Modal
+        id={DELETE_NOTE_MODAL_ID}
+        title="Delete note"
+        confirmLabel="Delete"
+        confirmType="danger"
+        onConfirm={handleDelete}
+      >
+        <p>Are you sure you want to delete this note?</p>
       </Modal>
     </>
   );

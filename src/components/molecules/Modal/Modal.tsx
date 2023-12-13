@@ -6,6 +6,7 @@ export type ModalProps = {
   title: string;
   onConfirm: () => void;
   confirmLabel?: string;
+  confirmType?: "primary" | "danger";
 } & PropsWithChildren;
 
 export const Modal = ({
@@ -14,6 +15,7 @@ export const Modal = ({
   title,
   onConfirm,
   confirmLabel = "confirm",
+  confirmType = "primary",
 }: ModalProps) => {
   return (
     <dialog id={id} className="modal">
@@ -23,13 +25,19 @@ export const Modal = ({
             <CloseIcon />
           </button>
         </form>
-        <h3 className="font-bold text-lg capitalize">{title}</h3>
+        <h3 className="font-bold text-lg capitalize mb-2">{title}</h3>
         {children}
         <div className="flex justify-end items-center gap-4 mt-8">
           <form method="dialog">
             <button className="btn btn-ghost capitalize">cancel</button>
           </form>
-          <button type="submit" onClick={onConfirm} className="btn btn-primary">
+          <button
+            type="submit"
+            onClick={onConfirm}
+            className={`btn ${
+              confirmType === "danger" ? "btn-error" : "btn-primary"
+            }`}
+          >
             {confirmLabel}
           </button>
         </div>
