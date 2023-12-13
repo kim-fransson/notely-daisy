@@ -29,7 +29,7 @@ export const Modal = ({
           <form method="dialog">
             <button className="btn btn-ghost capitalize">cancel</button>
           </form>
-          <button onClick={onConfirm} className="btn btn-primary">
+          <button type="submit" onClick={onConfirm} className="btn btn-primary">
             {confirmLabel}
           </button>
         </div>
