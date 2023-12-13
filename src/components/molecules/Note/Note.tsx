@@ -1,6 +1,8 @@
 import DeleteIcon from "@icons/delete-icon.svg?react";
 import EditIcon from "@icons/edit-icon.svg?react";
 import Checkbox from "@icons/checkbox-icon.svg?react";
+import CheckboxChecked from "@icons/checkbox-checked-icon.svg?react";
+
 import { DateTime } from "luxon";
 import { mapCategoryToColor } from "@/utils";
 
@@ -17,28 +19,33 @@ export const Note = ({
   onDeleteNote,
   onEditNote,
 }: NoteProps) => {
+  const isArchived = note.state === "archived";
   const timestamp = DateTime.fromISO(note.updatedAt).toFormat("dd.MM.yyyy");
   return (
-    <div className="card bg-base-200 shadow-lg max-w-sm">
+    <div
+      className={`card bg-base-200 shadow-lg max-w-sm ${
+        isArchived && "opacity-60"
+      }`}
+    >
       <div className="card-body">
         <div className="flex justify-between items-center gap-2">
           <div
-            className={`badge font-medium capitalize ${mapCategoryToColor(
-              note.category,
-            )}`}
+            className={`badge font-medium capitalize ${
+              isArchived ? "badge-neutral" : mapCategoryToColor(note.category)
+            }`}
           >
             {note.category}
           </div>
           <div className="card-actions justify-end items-center">
             <div
               className="tooltip tooltip-bottom capitalize"
-              data-tip="complete"
+              data-tip={isArchived ? "incomplete" : "complete"}
             >
               <button
                 onClick={onArchiveNote}
                 className="btn btn-circle btn-ghost"
               >
-                <Checkbox />
+                {isArchived ? <CheckboxChecked /> : <Checkbox />}
               </button>
             </div>
 
@@ -61,8 +68,10 @@ export const Note = ({
             </div>
           </div>
         </div>
-        <h2 className="card-title">{note.title}</h2>
-        <p>{note.description}</p>
+        <h2 className={`card-title ${isArchived && "line-through"}`}>
+          {note.title}
+        </h2>
+        <p className={`${isArchived && "line-through"}`}>{note.description}</p>
         <span className="ml-auto text-sm">{timestamp}</span>
       </div>
     </div>
