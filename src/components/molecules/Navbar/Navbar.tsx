@@ -18,7 +18,11 @@ export type NoteFormValues = {
 
 const ADD_NOTE_MODAL_ID = "add_note_modal";
 
-export const Navbar = () => {
+export type NavbarProps = {
+  onChange: (value: string) => void;
+};
+
+export const Navbar = ({ onChange }: NavbarProps) => {
   const { dispatch } = useContext(NotesContext);
 
   const { register, handleSubmit } = useForm<NoteFormValues>();
@@ -46,6 +50,7 @@ export const Navbar = () => {
             type="text"
             placeholder="Search"
             className="bg-transparent w-full"
+            onChange={(e) => onChange(e.target.value)}
           />
         </div>
         <button
