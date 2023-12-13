@@ -3,6 +3,7 @@ import {
   closeModal,
   filterByCategory,
   filterByState,
+  mapCategoryToColor,
   openModal,
   sortNotes,
 } from "@/utils";
@@ -12,6 +13,8 @@ import { Modal, Note, NoteFormValues } from "@components/molecules";
 import { useForm } from "react-hook-form";
 import { Select, TextField, Textarea } from "@/components/atoms";
 import { categories } from "@/data/categories";
+import NoNotesIcon from "@icons/no-notes-illustration.svg?react";
+import NoResultsIcon from "@icons/no-search-results-illustration.svg?react";
 
 const EDIT_NOTE_MODAL_ID = "edit_note_modal";
 const DELETE_NOTE_MODAL_ID = "delete_note_modal";
@@ -93,15 +96,24 @@ export const NoteList = ({
   return (
     <>
       <div className="flex flex-wrap gap-6">
-        {activeList.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            onEditNote={() => onEditNote(note)}
-            onDeleteNote={() => onDeleteNote(note)}
-            onArchiveNote={() => onArchiveNote(note)}
+        {activeList.length !== 0 ? (
+          activeList.map((note) => (
+            <Note
+              key={note.id}
+              note={note}
+              onEditNote={() => onEditNote(note)}
+              onDeleteNote={() => onDeleteNote(note)}
+              onArchiveNote={() => onArchiveNote(note)}
+            />
+          ))
+        ) : (
+          <MessageDisplay
+            notes={activeList}
+            showArchived={stateFilter === "archived"}
+            category={categoryFilter}
+            searchTerm={searchTerm}
           />
-        ))}
+        )}
       </div>
       <Modal
         id={EDIT_NOTE_MODAL_ID}
@@ -144,5 +156,63 @@ export const NoteList = ({
         <p>Are you sure you want to delete this note?</p>
       </Modal>
     </>
+  );
+};
+
+const MessageDisplay = (props: {
+  notes: Note[];
+  showArchived: boolean;
+  category?: Category;
+  searchTerm?: string;
+}) => {
+  const { notes, showArchived, category, searchTerm } = props;
+  if (notes.length > 0) {
+    return null;
+  }
+
+  let icon: JSX.Element = <NoNotesIcon />;
+  let text: string | JSX.Element = "";
+
+  if (notes.length > 0 && !category) {
+    return null;
+  }
+
+  if (notes.length === 0 && !searchTerm) {
+    icon = <NoNotesIcon />;
+    text = "Oops! No notes here. Time to start your note-taking adventure!";
+  }
+
+  if (notes.length === 0 && searchTerm) {
+    icon = <NoResultsIcon />;
+    text = "Sorry, no notes found. Time to create some magic!";
+  }
+
+  if (notes.length === 0 && category && !searchTerm) {
+    icon = <NoNotesIcon />;
+    text = (
+      <span>
+        Sorry, no{" "}
+        <div
+          className={`badge font-medium capitalize ${mapCategoryToColor(
+            category,
+          )}`}
+        >
+          {category}
+        </div>{" "}
+        notes found. Time to create some magic!
+      </span>
+    );
+  }
+
+  if (notes.length === 0 && showArchived && !searchTerm) {
+    icon = <NoNotesIcon />;
+    text = "Oops! No completed notes yet. Keep going, the finish line is near!";
+  }
+
+  return (
+    <div className="mx-auto flex flex-col gap-4 items-center mt-20">
+      {icon}
+      <span className="text-lg text-center">{text}</span>
+    </div>
   );
 };
