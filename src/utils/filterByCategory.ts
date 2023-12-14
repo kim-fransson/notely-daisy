@@ -1,5 +1,5 @@
 export const filterByCategory = (note: Note, category?: Category) => {
-  if (!category || category === "all") {
+  if (!category) {
     return true;
   }
   return note.category === category;

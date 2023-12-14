@@ -6,14 +6,7 @@ const meta: Meta<typeof Navbar> = {
   parameters: {
     layout: "fullscreen",
   },
-  argTypes: {
-    /* onSearch: {
-      action: "search",
-    }, */
-    onAdd: {
-      action: "add",
-    },
-  },
+  argTypes: {},
 };
 export default meta;
 

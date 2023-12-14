@@ -45,7 +45,7 @@ export const Navbar = ({ onChange, setSelectedCategory }: NavbarProps) => {
         state: "inbox",
       },
     });
-    setSelectedCategory(values.category);
+    setSelectedCategory && setSelectedCategory(values.category);
     reset();
     closeModal(ADD_NOTE_MODAL_ID);
   };
