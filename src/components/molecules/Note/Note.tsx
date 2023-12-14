@@ -28,7 +28,7 @@ export const Note = ({
       }`}
     >
       <div className="card-body">
-        <div className="flex justify-between items-center gap-2">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-2">
           <div
             className={`badge font-medium capitalize ${
               isArchived ? "badge-neutral" : mapCategoryToColor(note.category)
@@ -43,14 +43,17 @@ export const Note = ({
             >
               <button
                 onClick={onArchiveNote}
-                className="btn btn-circle btn-ghost"
+                className="btn btn-circle md:btn-md btn-sm btn-ghost"
               >
                 {isArchived ? <CheckboxChecked /> : <Checkbox />}
               </button>
             </div>
 
             <div className="tooltip tooltip-bottom capitalize" data-tip="edit">
-              <button onClick={onEditNote} className="btn btn-circle btn-ghost">
+              <button
+                onClick={onEditNote}
+                className="btn md:btn-md btn-sm btn-circle btn-ghost"
+              >
                 <EditIcon />
               </button>
             </div>
@@ -61,7 +64,7 @@ export const Note = ({
             >
               <button
                 onClick={onDeleteNote}
-                className="btn btn-circle btn-ghost"
+                className="btn btn-circle md:btn-md btn-sm btn-ghost"
               >
                 <DeleteIcon />
               </button>
@@ -71,7 +74,13 @@ export const Note = ({
         <h2 className={`card-title ${isArchived && "line-through"}`}>
           {note.title}
         </h2>
-        <p className={`${isArchived && "line-through"}`}>{note.description}</p>
+        <p
+          className={`break-all line-clamp-5 ${
+            isArchived ? "line-through" : ""
+          }`}
+        >
+          {note.description}
+        </p>
         <span className="ml-auto text-sm">{timestamp}</span>
       </div>
     </div>

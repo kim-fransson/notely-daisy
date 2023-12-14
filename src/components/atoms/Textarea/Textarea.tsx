@@ -29,6 +29,7 @@ export const Textarea = forwardRef(
         <textarea
           {...rest}
           ref={ref}
+          maxLength={maxLength}
           className="textarea textarea-bordered h-36"
         />
       </label>

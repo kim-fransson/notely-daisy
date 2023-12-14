@@ -35,7 +35,7 @@ export default function App() {
         <main className="p-10">
           <h1 className="mb-4 text-2xl">Your notes</h1>
 
-          <div className="flex justify-between">
+          <div className="flex md:flex-row flex-col gap-4 md:justify-between mb-4">
             <div role="tablist" className="tabs tabs-bordered max-w-lg mb-4">
               <a
                 onClick={() => setSelectedCategory("all")}
@@ -60,7 +60,7 @@ export default function App() {
               ))}
             </div>
 
-            <label className="label flex gap-4 cursor-pointer">
+            <label className="label flex justify-start gap-4 cursor-pointer">
               <input
                 onChange={(e) => setShowArchived(e.target.checked)}
                 type="checkbox"

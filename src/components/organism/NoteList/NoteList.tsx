@@ -84,9 +84,6 @@ export const NoteList = ({
   };
 
   const onSubmit = (values: NoteFormValues) => {
-    console.log({
-      values,
-    });
     dispatch({
       type: "UPDATE_NOTE",
       note: {
@@ -159,7 +156,8 @@ export const NoteList = ({
             defaultValue={selectedNote?.description}
             placeholder="Add description"
             className="col-span-full"
-            value={watch("description")}
+            value={watch("description") || selectedNote?.description}
+            maxLength={200}
             {...register("description", { maxLength: 200 })}
           />
         </form>
